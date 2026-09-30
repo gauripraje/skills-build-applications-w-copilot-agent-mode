@@ -9,12 +9,15 @@ const app = express();
 const PORT = Number(process.env.PORT || 8000);
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit-tracker';
 const codespaceName = process.env.CODESPACE_NAME;
-const frontendOrigin = codespaceName
-  ? `https://${codespaceName}-5173.app.github.dev`
-  : 'http://localhost:5173';
-const apiBaseUrl = codespaceName
+
+// Determine if running in Codespaces
+const isCodespace = !!codespaceName && codespaceName !== '';
+const apiBaseUrl = isCodespace
   ? `https://${codespaceName}-8000.app.github.dev`
   : 'http://localhost:8000';
+const frontendOrigin = isCodespace
+  ? `https://${codespaceName}-5173.app.github.dev`
+  : 'http://localhost:5173';
 
 app.use(
   cors({
@@ -51,9 +54,10 @@ const activities = [
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
-    environment: codespaceName ? 'codespace' : 'localhost',
+    environment: isCodespace ? 'codespace' : 'localhost',
     baseUrl: apiBaseUrl,
     timestamp: new Date().toISOString(),
+    codespaceName: codespaceName || 'not set',
   });
 });
 
@@ -106,7 +110,8 @@ app.post('/api/activities', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`OctoFit Tracker API running on port ${PORT}`);
-  console.log(`Environment: ${codespaceName ? 'Codespaces' : 'Localhost'}`);
+  console.log(`Environment: ${isCodespace ? 'Codespaces' : 'Localhost'}`);
   console.log(`API base URL: ${apiBaseUrl}`);
-  console.log(`MongoDB connected to ${MONGODB_URI}`);
+  console.log(`Frontend origin: ${frontendOrigin}`);
+  console.log(`MongoDB: ${MONGODB_URI}`);
 });
