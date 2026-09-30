@@ -16,7 +16,7 @@ function Users() {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiClient.get('/api/users');
+      const response = await apiClient.get('/api/users/');
       const data = response.data || response;
       setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -36,7 +36,7 @@ function Users() {
 
     try {
       setError(null);
-      const response = await apiClient.post('/api/users', formData);
+      const response = await apiClient.post('/api/users/', formData);
       const newUser = response.data;
       setUsers([...users, newUser]);
       setFormData({ name: '', email: '' });

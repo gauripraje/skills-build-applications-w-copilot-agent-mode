@@ -15,7 +15,7 @@ function Teams() {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiClient.get('/api/teams');
+      const response = await apiClient.get('/api/teams/');
       const data = response.data || response;
       setTeams(Array.isArray(data) ? data : []);
     } catch (err) {

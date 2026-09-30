@@ -15,7 +15,7 @@ function Leaderboard() {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiClient.get('/api/leaderboard');
+      const response = await apiClient.get('/api/leaderboard/');
       const data = response.data || response;
       setLeaderboard(Array.isArray(data) ? data : []);
     } catch (err) {

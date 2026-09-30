@@ -21,7 +21,7 @@ function Activities() {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiClient.get('/api/activities');
+      const response = await apiClient.get('/api/activities/');
       const data = response.data || response;
       setActivities(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -41,7 +41,7 @@ function Activities() {
 
     try {
       setError(null);
-      const response = await apiClient.post('/api/activities', formData);
+      const response = await apiClient.post('/api/activities/', formData);
       const newActivity = response.data;
       setActivities([...activities, newActivity]);
       setFormData({ name: '', type: 'cardio', duration: '', calories: '' });

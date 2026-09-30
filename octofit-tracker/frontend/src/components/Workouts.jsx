@@ -15,7 +15,7 @@ function Workouts() {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiClient.get('/api/workouts');
+      const response = await apiClient.get('/api/workouts/');
       const data = response.data || response;
       setWorkouts(Array.isArray(data) ? data : []);
     } catch (err) {
