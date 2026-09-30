@@ -1,37 +1,14 @@
 import express from 'express';
-import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { app, apiBaseUrl, frontendOrigin, codespaceName, isCodespace } from './server';
 
 dotenv.config();
 
-const app = express();
 const PORT = Number(process.env.PORT || 8000);
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit-tracker';
-const codespaceName = process.env.CODESPACE_NAME;
 
-// Determine if running in Codespaces
-const isCodespace = !!codespaceName && codespaceName !== '';
-const apiBaseUrl = isCodespace
-  ? `https://${codespaceName}-8000.app.github.dev`
-  : 'http://localhost:8000';
-const frontendOrigin = isCodespace
-  ? `https://${codespaceName}-5173.app.github.dev`
-  : 'http://localhost:5173';
-
-app.use(
-  cors({
-    origin: [
-      'http://localhost:5173',
-      'http://127.0.0.1:5173',
-      frontendOrigin,
-    ].filter(Boolean),
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
-app.use(express.json());
-
+// MongoDB Connection
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
@@ -41,6 +18,7 @@ mongoose
     console.error('MongoDB connection error:', err);
   });
 
+// In-memory storage for demo API
 const users = [
   { id: 1, name: 'Alice Johnson', email: 'alice@example.com' },
   { id: 2, name: 'Bob Smith', email: 'bob@example.com' },
@@ -51,6 +29,7 @@ const activities = [
   { id: 2, name: 'Strength Training', type: 'strength', duration: 45, calories: 420 },
 ];
 
+// Routes
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
@@ -108,6 +87,7 @@ app.post('/api/activities', (req, res) => {
   return res.status(201).json({ success: true, data: activity });
 });
 
+// Start Server
 app.listen(PORT, () => {
   console.log(`OctoFit Tracker API running on port ${PORT}`);
   console.log(`Environment: ${isCodespace ? 'Codespaces' : 'Localhost'}`);
