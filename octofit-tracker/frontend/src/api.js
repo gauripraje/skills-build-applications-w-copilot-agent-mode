@@ -14,7 +14,8 @@ const API_BASE_URL = getApiBaseUrl();
 
 export const apiClient = {
   async get(endpoint) {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`);
+    const url = `${API_BASE_URL}${endpoint}`;
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`API error: ${response.statusText}`);
     }
@@ -22,7 +23,8 @@ export const apiClient = {
   },
 
   async post(endpoint, data) {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
