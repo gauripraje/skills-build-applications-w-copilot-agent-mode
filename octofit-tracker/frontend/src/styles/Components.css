@@ -1,0 +1,17 @@
+.api-info {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  border-left: 4px solid #1976d2;
+  word-break: break-all;
+}
+
+.form {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
